@@ -1,6 +1,10 @@
-local M = {}
+local Utils = {}
 
-M.exec_cmd = function(cmd, callback)
+-- Executes a shell command asynchronously and captures its output
+-- @param cmd table: The command to execute as a table of strings
+-- @param callback function: The function to call with the command's output
+-- @return nil: This function does not return a value
+Utils.exec_cmd = function(cmd, callback)
   local result = {}
 
   vim.fn.jobstart(cmd, {
@@ -21,10 +25,14 @@ M.exec_cmd = function(cmd, callback)
   })
 end
 
-M.time_ago = function(time)
+-- Function to convert a timestamp to a human-readable "time ago" format
+-- @param timestamp number: The timestamp to convert
+-- @return string: A string representing the time elapsed since the give timestamp
+Utils.time_ago = function(timestamp)
   local now = os.time()
-  local seconds = now - time
+  local seconds = now - timestamp
 
+  -- Define time intervals in secods (approximations for months and years)
   local intervals = {
     year = 31536000,
     month = 2592000,
@@ -33,6 +41,7 @@ M.time_ago = function(time)
     minute = 60,
   }
 
+  -- Calculate the time difference in the largest possible unit
   for unit, seconds_in_unit in pairs(intervals) do
     local interval = math.floor(seconds / seconds_in_unit)
     if interval >= 1 then
@@ -43,4 +52,4 @@ M.time_ago = function(time)
   return "Just now"
 end
 
-return M
+return Utils
