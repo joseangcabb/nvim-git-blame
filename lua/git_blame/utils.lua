@@ -21,4 +21,26 @@ M.exec_cmd = function(cmd, callback)
   })
 end
 
+M.time_ago = function(time)
+  local now = os.time()
+  local seconds = now - time
+
+  local intervals = {
+    year = 31536000,
+    month = 2592000,
+    day = 86400,
+    hour = 3600,
+    minute = 60,
+  }
+
+  for unit, seconds_in_unit in pairs(intervals) do
+    local interval = math.floor(seconds / seconds_in_unit)
+    if interval >= 1 then
+      return interval .. " " .. unit .. (interval == 1 and "" or "s") .. " ago"
+    end
+  end
+
+  return "Just now"
+end
+
 return M
